@@ -1,27 +1,50 @@
 <!doctype html>
+<!ng-app links the Angular App (GitUserSearch) that we created in (js/app.js) to this view file>
 <html lang="en" ng-app="GitUserSearch">
   <head>
     <meta charset="utf-8">
     <title>Github user search</title>
+    <!These link tags are directing this page (the view) to styling documents that add style to
+      the view when it is rendered in the browser.>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="public/css/stylesheet.css">
+    <!The script tags are linking this document to other files within the project directory>
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="js/app.js"></script>
     <script src="js/gitUserSearchController.js"></script>
   </head>
+<!This div tag is holding the header h1.  The div tag is given an 'id' so that it can be reffered
+  to in the styling sheets so that the header can have style added.>
 <div id="title">
 <h1>Enter User Name:</h1>
+
 </div>
+  <!Here we are linking this view to the controller (GitUserSearchController) which is located
+    in the 'gitUserController.js' file.  We have then set it to the alias of searchCtrl so that
+    we can refer to it by the shorter alias in the rest of this file.>
   <body ng-controller="GitUserSearchController as searchCtrl">
     <div id="box">
       <form class="form-horizontal">
+        <!Here we are taking the text the user types into the search field and assigning it to the variable searchTerm.
+          searchTerm is a variable in the controller. We are also linking in the search field with the actual search operation
+          'doSearch()'.  This linking in or 'data binding' is allowing us to AUTOMATICALLY run the search after the user types
+          text in and means the app is searching even before we click the button.  The 500 means it is automatically searching
+          every 500ms>
         <input type="text" ng-model="searchCtrl.searchTerm"ng-change="searchCtrl.doSearch()" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }" >
+        <!Class is for styling (bootstrap) in this case makes the button large (lg) and of 'primary' style.
+          ng-click is Angular saying that when the user clicks the 'Search' button then the 'doSearch()'' function in the
+          controller is executed.  searchCtrl is the link to the controller.>
         <button class="btn btn-primary btn-lg" ng-click="searchCtrl.doSearch()">Search</button>
       </form>
+      <!The class is the id for the styling doc (bootstrap) so that it can grab exactly what it wants and
+        give it the desired styling.  'ng-repeat' is an Angular directive that behaves like a loop. It will itterate
+        over every 'user' in the 'items' array. 'searchCtrl' see above.  'searchResult' see gitUserSearchController.>
       <ul class="list-group" ng-repeat="user in searchCtrl.searchResult.items">
   <li>
+    <! The moustaches '{{xxx.xxx_xxx}}' are the keys to the key value pairs that the GitHub API throws back to us in
+      a JSON file. In this instance the 'avatar' returns the users picutre and 'html' is a link to their GitHub page>
     <img ng-src="{{user.avatar_url}}&s=50">
     <a ng-href="{{user.html_url}}">{{user.login}}</a>
   </li>

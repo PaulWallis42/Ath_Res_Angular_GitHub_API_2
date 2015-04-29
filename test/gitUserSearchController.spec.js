@@ -2,7 +2,8 @@ describe('GitUserSearchController', function() {
   beforeEach(module('GitUserSearch'));
 
   var ctrl;
-
+  // inject is a built in Angular function which allows access to our Angular app (js/app.js)
+  // and our controller (gitUserSearchController.js) from inside our tests.
   beforeEach(inject(function($controller) {
     ctrl = $controller('GitUserSearchController');
   }));
@@ -24,6 +25,9 @@ describe('GitUserSearchController', function() {
       );
     }));
 
+    // Here we are setting up some 'dummy results' and assinging the to the variable items.
+    // This means when testing we don't have to hit the GitHub API everytime we want to run
+    // a test.
     var items = [
       {
         "login": "tansaku",
@@ -39,7 +43,9 @@ describe('GitUserSearchController', function() {
 
     it('displays search results', function() {
       ctrl.searchTerm = 'hello';
+      // ctrl (see above). doSearch() is a controller function (gitUserSearchController.js)
       ctrl.doSearch();
+      // Backend allows stub methods to be used on the test instead of hitting the real Github API.
       httpBackend.flush();
       expect(ctrl.searchResult.items).toEqual(items);
     });
